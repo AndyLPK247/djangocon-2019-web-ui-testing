@@ -26,16 +26,18 @@ For Web UI testing, you will need to install the latest versions of
 [Google Chrome](https://www.google.com/chrome/)
 and [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/).
 You can use other browsers with Selenium WebDriver,
-but the tutorial will use Chrome and Firefox.
-Make sure your browser versions are up-to-date.
+but this tutorial uses Chrome and Firefox.
+Make sure your browser versions are up to date.
 
 You will also need the latest versions of the WebDriver executables for these browsers:
-[ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/) for Chrome
-and [geckodriver](https://github.com/mozilla/geckodriver/releases) for Firefox.
+
+* [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/) for Chrome
+* [geckodriver](https://github.com/mozilla/geckodriver/releases) for Firefox
+
 These WebDriver executables will act as a proxy between our test automation code and browser instances.
 Make sure their versions match the versions of the browsers, or else problems may happen.
 The WebDriver executables must also be on your [system path](https://en.wikipedia.org/wiki/PATH_(variable)).
-To verify, simply try to run them from the terminal, and then quit them.
+To verify, simply try to run them from the terminal, and then close them.
 The test automation needs these executables to be on the system path
 so that it can launch them when tests run.
 Please ask if you need help with this configuration.
@@ -45,11 +47,10 @@ If you are new to Git, [try learning the basics](https://try.github.io/).
 
 ### Setup Instructions
 
-1. Clone this repository.
+1. Clone this repository: `git clone https://github.com/AndyLPK247/djangocon-2019-web-ui-testing.git`
 2. Run `cd djangocon-2019-web-ui-testing` to enter the project.
 3. Run `pipenv install` to install the dependencies.
 4. Run `pipenv run python -m pytest` to verify that the framework can run tests.
-5. Create a branch for your code changes. (See *Branching* below.)
 
 ### Branching
 
@@ -59,14 +60,12 @@ The project is basically empty in the `master` branch.
 If you want to code along with the tutorial, then create a branch for your work off the `master` branch.
 To create your own branch named `tutorial/develop`, run:
 
-    > git checkout master
-    > git branch tutorial/develop
-    > git checkout tutorial/develop
+    > git checkout master -b tutorial/develop
 
 The `example/*` branches contain the completed code for tutorial parts.
 If you get stuck, you can always check the example code.
 
-* `example/1-first-test`
+* [`example/1-first-test`](https://github.com/AndyLPK247/djangocon-2019-web-ui-testing/tree/example/1-first-test)
 * `example/2-webdriver-setup`
 * `example/3-page-objects`
 * `example/4-locators`
@@ -83,7 +82,7 @@ If you get stuck, you can always check the example code.
 *Time Estimate: 5 Minutes*
 
 We should always write test *cases* before writing any test *code*.
-Test cases are procedures that exercise behavior to verify goodness and identify badness.
+Test cases exercise an application's behavior to verify goodness and identify badness.
 Test code simply automates test cases.
 Writing a test case first helps us form our thoughts well.
 
@@ -92,10 +91,10 @@ Consider the following test case:
 ```gherkin
 Scenario: Basic DuckDuckGo Search
     Given the DuckDuckGo home page is displayed
-    When the user searches for “panda”
-    Then the search result title contains “panda”
-    And the search result query is “panda”
-    And the search result links pertain to “panda”
+    When the user searches for "panda"
+    Then the search result title contains "panda"
+    And the search result query is "panda"
+    And the search result links pertain to "panda"
 ```
 
 Let's implement this test using pytest.
@@ -124,14 +123,14 @@ def test_basic_duckduckgo_search():
     # And the search result links pertain to "panda"
     # TODO
 
-    raise Exception("Incomplete Test")
+    raise NotImplementedError("Incomplete Test")
 ```
 
 Adding comments to stub each step may seem trivial,
-but it's a good first step when writing new test cases.
+but it's a good first step when you write new test cases.
 We can simply add code at each TODO line as we automate.
 Once the test is completed, we will remove the exception at the end.
-Also, note that pytest expects all test functions to begin with `test_`.
+Also, note that pytest expects all test function names to begin with `test_`.
 
 To avoid confusion when we run tests, let's remove the old placeholder test.
 Delete `tests/test_fw.py`.
@@ -147,18 +146,18 @@ Finally, commit your code change. Part 1 is complete!
 *Time Estimate: 5 Minutes*
 
 [Selenium WebDriver](https://www.seleniumhq.org/projects/webdriver/)
-is a tool for automating Web UI interactions with live browsers.
-It works with several popular programming languages and browser types.
+automates user interaction with Web browsers.
+It works with several popular programming languages and browsers.
 
 The Selenium WebDriver package for Python is named `selenium`.
 Run `pipenv install selenium` to install it for our project.
 
 Every test should use its own WebDriver instance.
 This keeps things simple and safe.
-The best way to set up the WebDriver instance is using a
+The best way to set up the WebDriver instance is to use a
 [pytest fixture](https://docs.pytest.org/en/latest/fixture.html).
 Fixtures are basically setup and cleanup functions.
-As a best practice, they should be placed in a `conftest.py` module so they can be used by any test.
+By convention, fixtures that multiple tests share are stored in [a file called `conftest.py`](https://docs.pytest.org/en/latest/fixture.html#conftest-py-sharing-fixture-functions).
 
 Create a new file named `tests/conftest.py` and add the following code:
 
@@ -191,7 +190,7 @@ Our fixture uses Chrome as the browser.
 Other browser types could be used.
 Real-world projects often read browser choice from a config file here.
 
-The implicit wait will make sure WebDriver calls wait for elements to appear before sending calls to them.
+The implicit wait ensures that WebDriver calls wait for elements to appear before sending calls to them.
 10 seconds should be reasonable for our test project's needs.
 For larger projects, however, setting explicit waits is a better practice
 because different calls need different wait times.
@@ -215,10 +214,10 @@ pytest will automatically call that fixture before the test runs.
 Whatever the fixture returns will be passed into the test function.
 Therefore, we can access the WebDriver instance using the `browser` variable!
 
-Rerun the test using `pipenv run python -m pytest` to test the fixture.
+Re-run the test using `pipenv run python -m pytest` to test the fixture.
 Even though the test should still fail,
-Chrome should briefly pop up for a few seconds while the test is running.
-Make sure Chrome quits once the test is done.
+Chrome should briefly pop up while the test is running.
+Make sure Chrome quits after the test is complete.
 Then, commit your latest code changes.
 Part 2 is now complete!
 
@@ -226,7 +225,7 @@ Part 2 is now complete!
 
 *Time Estimate: 10 Minutes*
 
-A **page object** is an object representing a Web page or component.
+A **page object** represents a component of a Web page or the entire page itself.
 They have *locators* for finding elements,
 as well as *interaction methods* that interact with the page under test.
 Page objects make low-level Selenium WebDriver calls
@@ -252,7 +251,7 @@ Then, put a blank file in it named `__init__.py`.
 The `pages` directory should *not* be under the `tests` directory.
 Why? When using pytest, the `tests` folder should *not* be a package.
 
-Create a new module named `pages/search.py` and add the following code
+Create a module named `pages/search.py` and add the following code
 for the DuckDuckGo search page:
 
 ```python
@@ -276,7 +275,7 @@ class DuckDuckGoSearchPage:
     pass
 ```
 
-Create another new module named `pages/result.py` and add the following code
+Create another module named `pages/result.py` and add the following code
 for the DuckDuckGo result page:
 
 ```python
@@ -353,7 +352,7 @@ Rerun the test using `pipenv run python -m pytest`.
 The test should fail again, but this time, it should fail on one of the assertions.
 Then, commit your latest code changes. Part 3 is now complete!
 
-### Part 4: Finding Locators
+### Part 4: Using Locators
 
 *Time Estimate: 15 Minutes*
 
@@ -364,7 +363,7 @@ Tests use page objects to interact with elements.
 
 Interactions typically require three steps:
 
-1. Wait for the target element to exist
+1. Wait for the target element to appear on the page
 2. Get an object representing the target element
 3. Send commands to the element object
 
@@ -744,7 +743,7 @@ def test_basic_duckduckgo_search(browser):
 
 Rerun the test using `pipenv run python -m pytest`.
 Now, finally, it should run to completion and pass!
-The test will take a few second to run because it must wait for page loads.
+The test will take a few seconds to run because it must wait for page loads.
 Chrome should pop up and automatically go through all test steps.
 Try not to interfere with the browser as the test runs.
 Make sure pytest doesn't report any failures when it completes.
@@ -755,8 +754,8 @@ Make sure pytest doesn't report any failures when it completes.
 
 Our test currently runs on Chrome,
 but it should be able to run on other browsers, too.
-Any Web UI test should be configurable to run on any applicable browser.
-Let's run it on Headless Chrome and Firefox!
+Any Web UI test should be configurable to run on any compatible browser.
+Let's run it on Firefox and Headless Chrome!
 
 Browser choice should be treated as a configuration parameter.
 It should not be hard-coded into automation code.
@@ -867,10 +866,10 @@ Let's revisit the test case steps:
 ```gherkin
 Scenario: Basic DuckDuckGo Search
     Given the DuckDuckGo home page is displayed
-    When the user searches for “panda”
-    Then the search result title contains “panda”
-    And the search result query is “panda”
-    And the search result links pertain to “panda”
+    When the user searches for "panda"
+    Then the search result title contains "panda"
+    And the search result query is "panda"
+    And the search result links pertain to "panda"
 ```
 
 Step 2 performs the search.
@@ -1074,7 +1073,7 @@ This DjangoCon 2019 *Hands-On Web UI Testing* tutorial is related to other tutor
 
 [Test Automation University](https://testautomationu.applitools.com/)
 offers free online courses on several testing and automation topics.
-All TAU courses are great, but the following ones compliment this tutorial especially well:
+All TAU courses are great, but the following lessons complement this tutorial especially well:
 
 * [Web Element Locator Strategies](https://testautomationu.applitools.com/web-element-locator-strategies/) shows how to write good locators and use Chrome DevTools.
 * [Behavior-Driven Python with pytest-bdd](https://testautomationu.applitools.com/behavior-driven-python-with-pytest-bdd/) shows how to use `pytest-bdd` to write BDD-style tests.
@@ -1106,7 +1105,7 @@ Other helpful links:
 
 ## About the Author
 
-This tutorial was written and delivered by **Andrew Knight** (aka *Pandy*), the "Automation Panda".
+This tutorial was written and delivered by **Andrew Knight** (aka *Pandy*), the "Automation Panda."
 Andy is a Pythonista who specializes in testing and automation.
 
 * Twitter: [@AutomationPanda](https://twitter.com/AutomationPanda)
