@@ -7,6 +7,15 @@ If you are taking the tutorial,
 then please clone this repository and follow the instructions below.
 The slide deck for the tutorial is also in this repository.
 
+## WARNING!
+
+**This project is archived.**
+It was the example code for a one-time workshop, and it will not be actively maintained.
+If you want to learn how to do Web UI testing with Python and Selenium WebDriver,
+then please take [Selenium WebDriver with Python](https://testautomationu.applitools.com/selenium-webdriver-python-tutorial/)
+from [Test Automation University](https://testautomationu.applitools.com/).
+It is a free course that covers the same material as this tutorial.
+
 ## Python Setup
 
 You can complete this tutorial using any OS: Windows, macOS, Linux, etc.
